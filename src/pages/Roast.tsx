@@ -4,8 +4,9 @@ import { BrutalButton } from "@/components/ui/brutal-button";
 import { BrutalInput } from "@/components/ui/brutal-input";
 import { BrutalTextarea } from "@/components/ui/brutal-textarea";
 import { BrutalCard, BrutalCardContent, BrutalCardHeader, BrutalCardTitle } from "@/components/ui/brutal-card";
-import { Download, Share2, ImageIcon, Flame, Skull, Heart, Lightbulb, PenLine, Target, AlertTriangle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Download, Share2, ImageIcon, Flame, Skull, Heart, Lightbulb, PenLine, Target } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { generateRoast, type RoastResponse } from "@/lib/api";
 
 const roastLevels = [
   { id: "soft", name: "Soft", emoji: "🌶️", description: "Gentle feedback" },
@@ -21,34 +22,9 @@ const tabs = [
   { id: "rewrite", label: "Pitch Rewrite", icon: PenLine },
 ];
 
-const competitorData = [
-  {
-    name: "Stripe",
-    description: "Payments infrastructure",
-    whyBetter: ["Massive trust", "Global reach", "Deep integrations"],
-    whyStruggle: ["No brand", "No money", "No partnerships"],
-  },
-  {
-    name: "Notion",
-    description: "All-in-one workspace",
-    whyBetter: ["Cult following", "Feature-rich", "Enterprise ready"],
-    whyStruggle: ["Late to market", "No differentiation", "Smaller team"],
-  },
-  {
-    name: "Figma",
-    description: "Collaborative design tool",
-    whyBetter: ["Industry standard", "Adobe backing", "Real-time collab"],
-    whyStruggle: ["No design cred", "Massive switching costs", "No community"],
-  },
-  {
-    name: "Slack",
-    description: "Team communication",
-    whyBetter: ["Network effects", "Integrations ecosystem", "Brand recognition"],
-    whyStruggle: ["Users hate change", "Enterprise contracts", "No distribution"],
-  },
-];
 
 export default function Roast() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     startupName: "",
     description: "",
@@ -57,54 +33,43 @@ export default function Roast() {
     roastLevel: "medium",
   });
   const [activeTab, setActiveTab] = useState("roast");
-  const [hasRoast, setHasRoast] = useState(false);
+  const [roastData, setRoastData] = useState<RoastResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder - would trigger roast generation
-    setHasRoast(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Map roast level from form format to API format
+      const roastLevelMap: Record<string, "Soft" | "Medium" | "Nuclear"> = {
+        soft: "Soft",
+        medium: "Medium",
+        nuclear: "Nuclear",
+      };
+
+      const response = await generateRoast({
+        startup_name: formData.startupName,
+        idea_description: formData.description,
+        target_users: formData.targetUsers,
+        budget: formData.budget,
+        roast_level: roastLevelMap[formData.roastLevel] || "Medium",
+      });
+
+      setRoastData(response);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to generate roast");
+      console.error("Roast generation error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const placeholderContent = {
-    roast: `💀 OH BOY, HERE WE GO...
-
-"${formData.startupName || "Your Startup"}" - really? That's the name you went with?
-
-Let me get this straight: You want to solve a problem that ${formData.targetUsers || "some imaginary users"} don't know they have, with a budget of ${formData.budget || "$0"}, in a market dominated by companies with actual resources.
-
-Your idea description reads like you asked ChatGPT to generate "startup idea" and hit enter without reading the output.
-
-The only thing disrupting here is your delusion disrupting reality.`,
-    feedback: `📊 HONEST ASSESSMENT
-
-Market Viability: 4/10
-Your target market exists, but you haven't validated if they'd actually pay for this.
-
-Differentiation: 3/10
-You're competing with established players without a clear USP.
-
-Execution Risk: High
-The scope seems ambitious for your current resources.
-
-Recommendation: Start smaller. Validate with 10 paying customers before building anything else.`,
-    tips: `🛟 SURVIVAL GUIDE
-
-1. Talk to 50 potential customers before writing another line of code
-2. Find one specific problem you can solve exceptionally well
-3. Your MVP should take 2 weeks, not 2 years
-4. Revenue > Vanity metrics
-5. Your co-founder's enthusiasm is not market validation`,
-    rewrite: `✍️ PITCH REWRITE
-
-Instead of: "${formData.description || "Your current pitch"}"
-
-Try: "We help [specific user] solve [specific problem] by [unique approach], resulting in [measurable outcome]. We've already [traction/validation]."
-
-Remember: Investors see 100 pitches a week. You have 30 seconds to not be forgettable.`,
-  };
 
   const renderCompetitorCheck = () => {
-    if (!hasRoast) {
+    if (!roastData) {
       return (
         <div className="flex items-center justify-center h-[300px] text-muted-foreground">
           <div className="text-center">
@@ -117,72 +82,76 @@ Remember: Investors see 100 pitches a week. You have 30 seconds to not be forget
     }
 
     return (
-      <div className="space-y-6">
-        <h3 className="text-xl font-bold flex items-center gap-2">
-          Who already killed your idea? 😈
-        </h3>
-
-        <div className="grid gap-4">
-          {competitorData.map((competitor, index) => (
-            <div
-              key={index}
-              className="bg-background border-4 border-foreground p-4"
-            >
-              <div className="mb-3">
-                <h4 className="text-lg font-bold">{competitor.name}</h4>
-                <p className="text-muted-foreground text-sm">{competitor.description}</p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <p className="font-bold text-sm mb-2">Why they're better:</p>
-                  <ul className="text-sm space-y-1">
-                    {competitor.whyBetter.map((point, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-primary">•</span>
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <p className="font-bold text-sm mb-2">Why you'll struggle:</p>
-                  <ul className="text-sm space-y-1">
-                    {competitor.whyStruggle.map((point, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-accent">•</span>
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Warning Box */}
-        <div className="border-4 border-accent bg-background p-4">
-          <div className="flex items-center gap-2 font-bold text-accent">
-            <AlertTriangle className="h-5 w-5" />
-            Reality check: You're late to this market.
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-4">
-          <BrutalButton variant="outline" size="sm">
-            Find My Niche
-          </BrutalButton>
-          <BrutalButton variant="outline" size="sm">
-            Generate Pivot Ideas
-          </BrutalButton>
-          <BrutalButton variant="outline" size="sm">
-            Cry & Continue
-          </BrutalButton>
-        </div>
+      <div className="space-y-4">
+        <pre className="whitespace-pre-wrap text-primary text-sm leading-relaxed">
+          {roastData.competitor_reality_check}
+        </pre>
       </div>
     );
   };
+
+  const renderSurvivalTips = () => {
+    if (!roastData) {
+      return (
+        <div className="flex items-center justify-center h-[300px] text-muted-foreground">
+          <div className="text-center">
+            <Lightbulb className="h-16 w-16 mx-auto mb-4 opacity-50" />
+            <p className="font-bold">No tips available yet.</p>
+            <p className="text-sm mt-2">Generate a roast to see survival tips.</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-3">
+        {roastData.survival_tips.map((tip, index) => (
+          <div
+            key={index}
+            className="bg-background border-4 border-foreground p-4"
+          >
+            <p className="text-primary text-sm leading-relaxed">
+              {index + 1}. {tip}
+            </p>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderContent = () => {
+    if (!roastData) {
+      return null;
+    }
+
+    switch (activeTab) {
+      case "roast":
+        return (
+          <pre className="whitespace-pre-wrap text-primary text-sm leading-relaxed">
+            {roastData.brutal_roast}
+          </pre>
+        );
+      case "feedback":
+        return (
+          <pre className="whitespace-pre-wrap text-primary text-sm leading-relaxed">
+            {roastData.honest_feedback}
+          </pre>
+        );
+      case "competitors":
+        return renderCompetitorCheck();
+      case "tips":
+        return renderSurvivalTips();
+      case "rewrite":
+        return (
+          <pre className="whitespace-pre-wrap text-primary text-sm leading-relaxed">
+            {roastData.pitch_rewrite}
+          </pre>
+        );
+      default:
+        return null;
+    }
+  };
+
 
   return (
     <PageLayout>
@@ -279,9 +248,14 @@ Remember: Investors see 100 pitches a week. You have 30 seconds to not be forget
                   </div>
                 </div>
 
-                <BrutalButton type="submit" size="lg" className="w-full">
-                  ROAST ME 😈
+                <BrutalButton type="submit" size="lg" className="w-full" disabled={loading}>
+                  {loading ? "ROASTING..." : "ROAST ME 😈"}
                 </BrutalButton>
+                {error && (
+                  <div className="bg-destructive/10 border-4 border-destructive p-4 text-destructive font-bold">
+                    {error}
+                  </div>
+                )}
               </form>
             </BrutalCardContent>
           </BrutalCard>
@@ -311,12 +285,16 @@ Remember: Investors see 100 pitches a week. You have 30 seconds to not be forget
             </BrutalCardHeader>
             <BrutalCardContent>
               <div className="terminal-box min-h-[300px]">
-                {activeTab === "competitors" ? (
-                  renderCompetitorCheck()
-                ) : hasRoast ? (
-                  <pre className="whitespace-pre-wrap text-primary text-sm leading-relaxed">
-                    {placeholderContent[activeTab as keyof typeof placeholderContent]}
-                  </pre>
+                {loading ? (
+                  <div className="flex items-center justify-center h-[300px] text-muted-foreground">
+                    <div className="text-center">
+                      <Flame className="h-16 w-16 mx-auto mb-4 opacity-50 animate-pulse" />
+                      <p className="font-bold">Generating your roast...</p>
+                      <p className="text-sm mt-2">This may take a moment</p>
+                    </div>
+                  </div>
+                ) : roastData ? (
+                  renderContent()
                 ) : (
                   <div className="flex items-center justify-center h-[300px] text-muted-foreground">
                     <div className="text-center">
@@ -330,27 +308,30 @@ Remember: Investors see 100 pitches a week. You have 30 seconds to not be forget
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-4 mt-6">
-                <BrutalButton variant="outline" size="sm" disabled={!hasRoast}>
+                <BrutalButton variant="outline" size="sm" disabled={!roastData}>
                   <ImageIcon className="h-4 w-4 mr-2" />
                   Generate Meme
                 </BrutalButton>
-                <BrutalButton variant="outline" size="sm" disabled={!hasRoast}>
+                <BrutalButton variant="outline" size="sm" disabled={!roastData}>
                   <Download className="h-4 w-4 mr-2" />
                   Download PDF
                 </BrutalButton>
-                <BrutalButton variant="outline" size="sm" disabled={!hasRoast}>
+                <BrutalButton variant="outline" size="sm" disabled={!roastData}>
                   <Share2 className="h-4 w-4 mr-2" />
                   Share
                 </BrutalButton>
               </div>
 
-              {hasRoast && (
+              {roastData && (
                 <div className="mt-6 pt-6 border-t-4 border-foreground">
-                  <Link to="/result">
-                    <BrutalButton className="w-full">
-                      View Full Results
-                    </BrutalButton>
-                  </Link>
+                  <BrutalButton
+                    className="w-full"
+                    onClick={() =>
+                      navigate("/result", { state: { roast: roastData } })
+                    }
+                  >
+                    View Analysis Dashboard
+                  </BrutalButton>
                 </div>
               )}
             </BrutalCardContent>

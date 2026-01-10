@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { BrutalCard, BrutalCardContent } from "@/components/ui/brutal-card";
@@ -5,23 +6,79 @@ import { BrutalProgress } from "@/components/ui/brutal-progress";
 import { ScoreMeter } from "@/components/roast/ScoreMeter";
 import { Share2, RotateCcw, Zap, Quote } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import type { RoastResponse } from "@/lib/api";
 
-const savageQuotes = [
-  "Your competitive advantage is that you have no competition because no one wants to build this.",
-  "I've seen better market research on a cereal box.",
-  "Your 5-year projection assumes you'll still be motivated after month 3.",
-];
+// Generate random score between min and max
+const generateRandomScore = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
-const metrics = [
-  { label: "Originality", value: 3, max: 10 },
-  { label: "Market Fit", value: 5, max: 10 },
-  { label: "Founder Sanity", value: 2, max: 10 },
-  { label: "Investor Appeal", value: 4, max: 10 },
-  { label: "Execution Feasibility", value: 6, max: 10 },
+const metricLabels = [
+  "Originality",
+  "Market Fit",
+  "Founder Sanity",
+  "Investor Appeal",
+  "Execution Feasibility",
 ];
 
 export default function Result() {
-  const roastScore = 9.2;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [roastData, setRoastData] = useState<RoastResponse | null>(null);
+  const [metrics, setMetrics] = useState<
+    Array<{ label: string; value: number; max: number }>
+  >([]);
+  const [roastScore, setRoastScore] = useState(0);
+
+  useEffect(() => {
+    // Get roast data from navigation state
+    const state = location.state as { roast?: RoastResponse } | null;
+    if (state?.roast) {
+      setRoastData(state.roast);
+      // Generate random scores
+      const newMetrics = metricLabels.map((label) => ({
+        label,
+        value: generateRandomScore(1, 10),
+        max: 10,
+      }));
+      setMetrics(newMetrics);
+      // Calculate average score
+      const average =
+        newMetrics.reduce((sum, m) => sum + m.value, 0) / newMetrics.length;
+      setRoastScore(Math.round(average * 10) / 10);
+    } else {
+      // If no data, redirect to roast page
+      navigate("/roast", { replace: true });
+    }
+  }, [location.state, navigate]);
+
+  // Show loading or redirect message if no data
+  if (!roastData) {
+    return (
+      <PageLayout>
+        <section className="section-container py-12">
+          <div className="text-center">
+            <p>Redirecting to roast page...</p>
+          </div>
+        </section>
+      </PageLayout>
+    );
+  }
+
+  // Extract quotes from roast data for display
+  const extractQuotes = () => {
+    const quotes: string[] = [];
+    // Get first few sentences from brutal_roast as quotes
+    const brutalLines = roastData.brutal_roast
+      .split(/[.!?]\s+/)
+      .filter((line) => line.trim().length > 20)
+      .slice(0, 3);
+    quotes.push(...brutalLines.map((q) => q.trim()));
+    return quotes;
+  };
+
+  const savageQuotes = extractQuotes();
 
   return (
     <PageLayout>
@@ -81,16 +138,66 @@ export default function Result() {
         <BrutalCard className="max-w-3xl mx-auto mb-12 bg-primary">
           <BrutalCardContent className="text-center py-8">
             <h3 className="text-2xl font-bold mb-4">The Verdict</h3>
-            <p className="text-lg mb-6">
-              Your startup idea has potential, but it needs serious work.
-              The market exists, but your approach needs refinement.
-              Consider pivoting your value proposition and validating with real customers.
+            <p className="text-lg mb-6 whitespace-pre-wrap">
+              {roastData.honest_feedback}
             </p>
             <div className="inline-block bg-secondary text-secondary-foreground px-6 py-3 border-4 border-foreground font-bold">
-              Survival Chance: 23%
+              Survival Chance: {Math.round((roastScore / 10) * 100)}%
             </div>
           </BrutalCardContent>
         </BrutalCard>
+
+        {/* Detailed Sections */}
+        <div className="space-y-8 max-w-4xl mx-auto mb-12">
+          <BrutalCard>
+            <BrutalCardContent className="py-6">
+              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                💀 Brutal Roast
+              </h3>
+              <p className="text-lg whitespace-pre-wrap">
+                {roastData.brutal_roast}
+              </p>
+            </BrutalCardContent>
+          </BrutalCard>
+
+          <BrutalCard>
+            <BrutalCardContent className="py-6">
+              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                🎯 Competitor Reality Check
+              </h3>
+              <p className="text-lg whitespace-pre-wrap">
+                {roastData.competitor_reality_check}
+              </p>
+            </BrutalCardContent>
+          </BrutalCard>
+
+          <BrutalCard>
+            <BrutalCardContent className="py-6">
+              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                🛟 Survival Tips
+              </h3>
+              <ul className="space-y-3">
+                {roastData.survival_tips.map((tip, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="font-bold text-primary">{index + 1}.</span>
+                    <p className="text-lg">{tip}</p>
+                  </li>
+                ))}
+              </ul>
+            </BrutalCardContent>
+          </BrutalCard>
+
+          <BrutalCard>
+            <BrutalCardContent className="py-6">
+              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                ✍️ Pitch Rewrite
+              </h3>
+              <p className="text-lg whitespace-pre-wrap">
+                {roastData.pitch_rewrite}
+              </p>
+            </BrutalCardContent>
+          </BrutalCard>
+        </div>
 
         {/* Actions */}
         <div className="flex flex-wrap justify-center gap-4">
