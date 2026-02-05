@@ -82,24 +82,24 @@ export default function Result() {
 
   return (
     <PageLayout>
-      <section className="section-container py-12">
+      <section className="section-container py-8 sm:py-10 md:py-12">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 px-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4">
             Your Roast Results 💀
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
             The truth hurts. Here's yours.
           </p>
         </div>
 
         {/* Score */}
-        <div className="mb-12">
+        <div className="mb-8 sm:mb-10 md:mb-12 px-4">
           <ScoreMeter score={roastScore} />
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-12 max-w-6xl mx-auto">
           {metrics.map((metric) => (
             <RetroUICard key={metric.label}>
               <RetroUICardContent>
@@ -114,20 +114,20 @@ export default function Result() {
         </div>
 
         {/* Savage Quotes */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold mb-8 text-center">
+        <div className="mb-8 sm:mb-10 md:mb-12 px-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center">
             Highlights from Your Roast 🔥
           </h2>
-          <div className="space-y-6 max-w-3xl mx-auto">
+          <div className="space-y-4 sm:space-y-6 max-w-4xl mx-auto">
             {savageQuotes.map((quote, index) => (
               <RetroUICard
                 key={index}
                 rotate={index % 2 === 0 ? "1" : "-1"}
                 className="bg-muted"
               >
-                <RetroUICardContent className="flex gap-4">
-                  <Quote className="h-8 w-8 flex-shrink-0 text-primary" />
-                  <p className="text-lg font-medium italic">"{quote}"</p>
+                <RetroUICardContent className="flex gap-3 sm:gap-4">
+                  <Quote className="h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0 text-primary" />
+                  <p className="text-base sm:text-lg md:text-xl font-medium italic">"{quote}"</p>
                 </RetroUICardContent>
               </RetroUICard>
             ))}
@@ -135,52 +135,52 @@ export default function Result() {
         </div>
 
         {/* Summary Card */}
-        <RetroUICard className="max-w-3xl mx-auto mb-12 bg-primary">
-          <RetroUICardContent className="text-center py-8">
-            <h3 className="text-2xl font-bold mb-4">The Verdict</h3>
-            <p className="text-lg mb-6 whitespace-pre-wrap">
+        <RetroUICard className="max-w-4xl mx-auto mb-8 sm:mb-10 md:mb-12 bg-primary">
+          <RetroUICardContent className="text-center py-6 sm:py-8 md:py-10">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">The Verdict</h3>
+            <p className="text-base sm:text-lg md:text-xl mb-4 sm:mb-6 whitespace-pre-wrap">
               {roastData.honest_feedback}
             </p>
-            <div className="inline-block bg-secondary text-secondary-foreground px-6 py-3 border-2 border-foreground font-bold">
+            <div className="inline-block bg-secondary text-secondary-foreground px-4 sm:px-6 md:px-8 py-2 sm:py-3 border-2 border-foreground font-bold text-sm sm:text-base md:text-lg">
               Survival Chance: {Math.round((roastScore / 10) * 100)}%
             </div>
           </RetroUICardContent>
         </RetroUICard>
 
         {/* Detailed Sections */}
-        <div className="space-y-8 max-w-4xl mx-auto mb-12">
+        <div className="space-y-6 sm:space-y-8 max-w-5xl mx-auto mb-8 sm:mb-10 md:mb-12 px-4">
           <RetroUICard>
-            <RetroUICardContent className="py-6">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <RetroUICardContent className="py-4 sm:py-6 md:py-8">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 flex items-center gap-2">
                 💀 Brutal Roast
               </h3>
-              <p className="text-lg whitespace-pre-wrap">
+              <p className="text-base sm:text-lg md:text-xl whitespace-pre-wrap">
                 {roastData.brutal_roast}
               </p>
             </RetroUICardContent>
           </RetroUICard>
 
           <RetroUICard>
-            <RetroUICardContent className="py-6">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <RetroUICardContent className="py-4 sm:py-6 md:py-8">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 flex items-center gap-2">
                 🎯 Competitor Reality Check
               </h3>
-              <p className="text-lg whitespace-pre-wrap">
+              <p className="text-base sm:text-lg md:text-xl whitespace-pre-wrap">
                 {roastData.competitor_reality_check}
               </p>
             </RetroUICardContent>
           </RetroUICard>
 
           <RetroUICard>
-            <RetroUICardContent className="py-6">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <RetroUICardContent className="py-4 sm:py-6 md:py-8">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 flex items-center gap-2">
                 🛟 Survival Tips
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2 sm:space-y-3">
                 {roastData.survival_tips.map((tip, index) => (
-                  <li key={index} className="flex items-start gap-3">
+                  <li key={index} className="flex items-start gap-2 sm:gap-3">
                     <span className="font-bold text-primary">{index + 1}.</span>
-                    <p className="text-lg">{tip}</p>
+                    <p className="text-base sm:text-lg md:text-xl">{tip}</p>
                   </li>
                 ))}
               </ul>
@@ -188,11 +188,11 @@ export default function Result() {
           </RetroUICard>
 
           <RetroUICard>
-            <RetroUICardContent className="py-6">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <RetroUICardContent className="py-4 sm:py-6 md:py-8">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 flex items-center gap-2">
                 ✍️ Pitch Rewrite
               </h3>
-              <p className="text-lg whitespace-pre-wrap">
+              <p className="text-base sm:text-lg md:text-xl whitespace-pre-wrap">
                 {roastData.pitch_rewrite}
               </p>
             </RetroUICardContent>
@@ -200,20 +200,20 @@ export default function Result() {
         </div>
 
         {/* Actions */}
-        <div className="flex flex-wrap justify-center gap-4">
-          <RetroUIButton size="lg">
-            <Share2 className="h-5 w-5 mr-2" />
+        <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 px-4">
+          <RetroUIButton size="lg" className="w-full sm:w-auto">
+            <Share2 className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
             Share Results
           </RetroUIButton>
-          <Link to="/roast">
-            <RetroUIButton variant="outline" size="lg">
-              <RotateCcw className="h-5 w-5 mr-2" />
+          <Link to="/roast" className="w-full sm:w-auto">
+            <RetroUIButton variant="outline" size="lg" className="w-full">
+              <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               Try Again
             </RetroUIButton>
           </Link>
-          <Link to="/pricing">
-            <RetroUIButton variant="secondary" size="lg">
-              <Zap className="h-5 w-5 mr-2" />
+          <Link to="/pricing" className="w-full sm:w-auto">
+            <RetroUIButton variant="secondary" size="lg" className="w-full">
+              <Zap className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               Upgrade for More
             </RetroUIButton>
           </Link>

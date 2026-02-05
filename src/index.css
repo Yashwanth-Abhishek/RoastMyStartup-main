@@ -45,14 +45,14 @@
 
     --radius: 0px;
 
-    /* Custom tokens */
+    /* Custom tokens - Responsive */
     --border-thick: 2px;
     --border-medium: 2px;
-    --hover-shift: 4px;
+    --hover-shift: 3px;
 
-    /* RetroUI Theme Variables */
-    --shadow-x: 6px;
-    --shadow-y: 6px;
+    /* RetroUI Theme Variables - Responsive */
+    --shadow-x: 4px;
+    --shadow-y: 4px;
 
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
@@ -64,6 +64,24 @@
     --sidebar-border: 0 0% 0%;
     --sidebar-ring: 50 100% 50%;
   }
+
+  /* Tablet and up */
+  @media (min-width: 768px) {
+    :root {
+      --shadow-x: 5px;
+      --shadow-y: 5px;
+      --hover-shift: 4px;
+    }
+  }
+
+  /* Desktop and up */
+  @media (min-width: 1024px) {
+    :root {
+      --shadow-x: 6px;
+      --shadow-y: 6px;
+      --hover-shift: 4px;
+    }
+  }
 }
 
 @layer base {
@@ -73,6 +91,8 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -105,12 +125,12 @@
 
   /* Terminal/code style box */
   .terminal-box {
-    @apply bg-black text-white font-mono p-6 border-2 border-black;
+    @apply bg-black text-white font-mono p-4 sm:p-5 md:p-6 border-2 border-black overflow-x-auto;
   }
 
-  /* Section container */
+  /* Section container - Responsive with max-width for ultrawide */
   .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10;
   }
 
   /* RetroUI Components */
@@ -128,6 +148,37 @@
 
   .retroui-border-thick {
     @apply border-[3px] border-black rounded-none;
+  }
+}
+
+/* Responsive shadow adjustments */
+@media (max-width: 640px) {
+  .retroui-shadow {
+    box-shadow: 4px 4px 0 #000;
+  }
+  
+  .retroui-shadow-yellow {
+    box-shadow: 4px 4px 0 #eab308;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .retroui-shadow {
+    box-shadow: 5px 5px 0 #000;
+  }
+  
+  .retroui-shadow-yellow {
+    box-shadow: 5px 5px 0 #eab308;
+  }
+}
+
+@media (min-width: 1024px) {
+  .retroui-shadow {
+    box-shadow: 6px 6px 0 #000;
+  }
+  
+  .retroui-shadow-yellow {
+    box-shadow: 6px 6px 0 #eab308;
   }
 }
 

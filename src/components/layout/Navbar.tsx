@@ -17,11 +17,12 @@ export function Navbar() {
   return (
     <nav className="bg-white border-b-2 border-black sticky top-0 z-50">
       <div className="section-container">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 font-bold text-xl">
-            <Flame className="h-8 w-8 text-yellow-400 fill-yellow-400" />
+          <Link to="/" className="flex items-center gap-2 font-bold text-lg sm:text-xl">
+            <Flame className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-400 fill-yellow-400" />
             <span className="hidden sm:inline">RoastMyStartup</span>
+            <span className="sm:hidden">RMS</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -30,7 +31,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 to={link.href}
-                className={`px-4 py-2 font-bold transition-colors ${
+                className={`px-3 lg:px-4 py-2 font-bold text-sm lg:text-base transition-colors ${
                   location.pathname === link.href
                     ? "bg-yellow-400 text-black"
                     : "hover:bg-gray-100"
@@ -44,7 +45,7 @@ export function Navbar() {
           {/* CTA Button */}
           <div className="hidden md:block">
             <Link to="/roast">
-              <RetroUIButton size="sm">
+              <RetroUIButton size="sm" className="text-sm lg:text-base">
                 ROAST ME 🔥
               </RetroUIButton>
             </Link>
@@ -55,7 +56,7 @@ export function Navbar() {
             className="md:hidden p-2 border-2 border-black retroui-shadow"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? <X className="h-5 w-5 sm:h-6 sm:w-6" /> : <Menu className="h-5 w-5 sm:h-6 sm:w-6" />}
           </button>
         </div>
       </div>
@@ -69,7 +70,7 @@ export function Navbar() {
                 key={link.href}
                 to={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-4 py-4 font-bold border-b-2 border-black ${
+                className={`px-4 py-4 font-bold border-b-2 border-black text-sm ${
                   location.pathname === link.href
                     ? "bg-yellow-400 text-black"
                     : ""

@@ -13,11 +13,11 @@ const retrouiButtonVariants = cva(
         destructive: "bg-red-500 text-white hover:bg-red-600",
       },
       size: {
-        default: "h-12 px-6 py-3",
-        sm: "h-10 px-4 py-2 text-sm",
-        lg: "h-14 px-8 py-4 text-lg",
-        xl: "h-16 px-10 py-5 text-xl",
-        icon: "h-12 w-12",
+        default: "h-10 sm:h-12 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base",
+        sm: "h-8 sm:h-10 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm",
+        lg: "h-12 sm:h-14 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg",
+        xl: "h-14 sm:h-16 px-8 sm:px-10 py-4 sm:py-5 text-lg sm:text-xl",
+        icon: "h-10 w-10 sm:h-12 sm:w-12",
       },
     },
     defaultVariants: {

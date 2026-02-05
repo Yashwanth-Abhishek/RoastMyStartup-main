@@ -36,36 +36,36 @@ export function PricingCard({
       rotate={isPopular ? "1" : "-1"}
     >
       {isPopular && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary text-secondary-foreground px-4 py-1 border-2 border-foreground font-bold text-sm">
+        <div className="absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2 bg-secondary text-secondary-foreground px-3 sm:px-4 py-1 border-2 border-foreground font-bold text-xs sm:text-sm whitespace-nowrap">
           MOST POPULAR 💀
         </div>
       )}
 
       <RetroUICardHeader>
-        <RetroUICardTitle className="text-3xl">{name}</RetroUICardTitle>
-        <p className="text-muted-foreground mt-2">{description}</p>
+        <RetroUICardTitle className="text-2xl sm:text-3xl">{name}</RetroUICardTitle>
+        <p className="text-sm sm:text-base text-muted-foreground mt-2">{description}</p>
       </RetroUICardHeader>
 
       <RetroUICardContent>
-        <div className="mb-6">
-          <span className="text-5xl font-bold">{price}</span>
+        <div className="mb-4 sm:mb-6">
+          <span className="text-4xl sm:text-5xl font-bold">{price}</span>
           {price !== "Free" && (
-            <span className="text-muted-foreground">{period}</span>
+            <span className="text-sm sm:text-base text-muted-foreground">{period}</span>
           )}
         </div>
 
-        <ul className="space-y-3 mb-8">
+        <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
           {features.map((feature, index) => (
-            <li key={index} className="flex items-center gap-3">
+            <li key={index} className="flex items-center gap-2 sm:gap-3">
               {feature.included ? (
-                <Check className="h-5 w-5 flex-shrink-0" />
+                <Check className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
               ) : (
-                <X className="h-5 w-5 flex-shrink-0 text-muted-foreground" />
+                <X className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 text-muted-foreground" />
               )}
               <span
-                className={
+                className={`text-xs sm:text-sm ${
                   feature.included ? "" : "text-muted-foreground line-through"
-                }
+                }`}
               >
                 {feature.text}
               </span>

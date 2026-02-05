@@ -19,7 +19,7 @@ const RetroUICard = React.forwardRef<HTMLDivElement, RetroUICardProps>(
       <div
         ref={ref}
         className={cn(
-          "bg-white text-black border-2 border-black p-6 retroui-shadow",
+          "bg-white text-black border-2 border-black p-4 sm:p-6 retroui-shadow",
           rotateClass,
           className
         )}
@@ -34,7 +34,7 @@ const RetroUICardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("mb-4", className)} {...props} />
+  <div ref={ref} className={cn("mb-3 sm:mb-4", className)} {...props} />
 ));
 RetroUICardHeader.displayName = "RetroUICardHeader";
 
@@ -44,7 +44,7 @@ const RetroUICardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn("text-2xl font-heading font-bold leading-none tracking-tight", className)}
+    className={cn("text-xl sm:text-2xl font-heading font-bold leading-none tracking-tight", className)}
     {...props}
   />
 ));
@@ -56,7 +56,7 @@ const RetroUICardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-gray-600 mt-2", className)}
+    className={cn("text-sm sm:text-base text-gray-600 mt-2", className)}
     {...props}
   />
 ));
@@ -74,7 +74,7 @@ const RetroUICardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("mt-4 flex items-center", className)} {...props} />
+  <div ref={ref} className={cn("mt-3 sm:mt-4 flex items-center", className)} {...props} />
 ));
 RetroUICardFooter.displayName = "RetroUICardFooter";
 

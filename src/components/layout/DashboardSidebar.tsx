@@ -15,16 +15,16 @@ export function DashboardSidebar() {
 
   return (
     <aside
-      className={`bg-background border-r-2 border-foreground flex flex-col transition-all duration-200 ${
+      className={`bg-background border-r-2 border-foreground flex-col transition-all duration-200 hidden lg:flex ${
         collapsed ? "w-16" : "w-64"
       }`}
     >
       {/* Logo */}
       <div className="h-16 border-b-2 border-foreground flex items-center justify-between px-4">
         {!collapsed && (
-          <Link to="/" className="flex items-center gap-2 font-bold">
-            <Flame className="h-6 w-6 text-primary fill-primary" />
-            <span>RoastMyStartup</span>
+          <Link to="/" className="flex items-center gap-2 font-bold text-sm">
+            <Flame className="h-5 w-5 sm:h-6 sm:w-6 text-primary fill-primary" />
+            <span className="hidden sm:inline">RoastMyStartup</span>
           </Link>
         )}
         <button
@@ -49,7 +49,7 @@ export function DashboardSidebar() {
             <Link
               key={link.href}
               to={link.href}
-              className={`flex items-center gap-3 px-4 py-3 font-bold transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 font-bold text-sm transition-colors ${
                 isActive
                   ? "bg-primary text-primary-foreground"
                   : "hover:bg-muted"
@@ -65,12 +65,12 @@ export function DashboardSidebar() {
       {/* Upgrade Banner */}
       {!collapsed && (
         <div className="p-4 border-t-2 border-foreground">
-          <div className="bg-primary p-4 border-2 border-foreground">
-            <p className="font-bold text-sm mb-2">Go Nuclear! 💀</p>
+          <div className="bg-primary p-3 sm:p-4 border-2 border-foreground">
+            <p className="font-bold text-xs sm:text-sm mb-2">Go Nuclear! 💀</p>
             <p className="text-xs mb-3">Unlock unlimited roasts</p>
             <Link
               to="/pricing"
-              className="block text-center bg-secondary text-secondary-foreground py-2 px-4 border-2 border-foreground font-bold text-sm hover:translate-x-1 hover:translate-y-1 transition-transform"
+              className="block text-center bg-secondary text-secondary-foreground py-2 px-3 sm:px-4 border-2 border-foreground font-bold text-xs sm:text-sm hover:translate-x-1 hover:translate-y-1 transition-transform"
             >
               UPGRADE
             </Link>

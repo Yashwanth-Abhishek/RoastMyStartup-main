@@ -193,17 +193,17 @@ export default function Roast() {
 
   return (
     <PageLayout>
-      <section className="section-container py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+      <section className="section-container py-8 sm:py-10 md:py-12">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 px-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4">
             Get Your Startup Roasted 🔥
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
             Fill in the details. Brace for impact.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 max-w-7xl mx-auto">
           {/* Form Panel */}
           <RetroUICard>
             <RetroUICardHeader>
@@ -263,7 +263,7 @@ export default function Roast() {
 
                 <div>
                   <label className="block font-bold mb-4">Roast Level</label>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-4">
                     {roastLevels.map((level) => (
                       <button
                         key={level.id}
@@ -271,16 +271,16 @@ export default function Roast() {
                         onClick={() =>
                           updateFormData({ roastLevel: level.id })
                         }
-                        className={`p-4 border-2 border-foreground text-center transition-transform hover:translate-x-1 hover:translate-y-1 ${
+                        className={`p-3 sm:p-4 border-2 border-foreground text-center transition-transform hover:translate-x-1 hover:translate-y-1 ${
                           formData.roastLevel === level.id
                             ? "bg-primary"
                             : "bg-background"
                         }`}
                       >
-                        <span className="text-2xl block mb-1">
+                        <span className="text-xl sm:text-2xl block mb-1">
                           {level.emoji}
                         </span>
-                        <span className="font-bold text-sm">{level.name}</span>
+                        <span className="font-bold text-xs sm:text-sm">{level.name}</span>
                       </button>
                     ))}
                   </div>
@@ -353,13 +353,13 @@ export default function Roast() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-2 px-4 py-2 border-2 border-foreground font-bold text-sm transition-transform ${
+                      className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border-2 border-foreground font-bold text-xs sm:text-sm transition-transform ${
                         activeTab === tab.id
                           ? "bg-primary"
                           : "bg-background hover:translate-x-0.5 hover:translate-y-0.5"
                       }`}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-3 w-3 sm:h-4 sm:w-4" />
                       <span className="hidden sm:inline">{tab.label}</span>
                     </button>
                   );
@@ -390,17 +390,19 @@ export default function Roast() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-4 mt-6">
-                <RetroUIButton variant="outline" size="sm" disabled={!roastData}>
-                  <ImageIcon className="h-4 w-4 mr-2" />
-                  Generate Meme
+              <div className="flex flex-wrap gap-3 sm:gap-4 mt-6">
+                <RetroUIButton variant="outline" size="sm" disabled={!roastData} className="flex-1 sm:flex-none text-xs sm:text-sm">
+                  <ImageIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Generate Meme</span>
+                  <span className="sm:hidden">Meme</span>
                 </RetroUIButton>
-                <RetroUIButton variant="outline" size="sm" disabled={!roastData}>
-                  <Download className="h-4 w-4 mr-2" />
-                  Download PDF
+                <RetroUIButton variant="outline" size="sm" disabled={!roastData} className="flex-1 sm:flex-none text-xs sm:text-sm">
+                  <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Download PDF</span>
+                  <span className="sm:hidden">PDF</span>
                 </RetroUIButton>
-                <RetroUIButton variant="outline" size="sm" disabled={!roastData}>
-                  <Share2 className="h-4 w-4 mr-2" />
+                <RetroUIButton variant="outline" size="sm" disabled={!roastData} className="flex-1 sm:flex-none text-xs sm:text-sm">
+                  <Share2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                   Share
                 </RetroUIButton>
               </div>

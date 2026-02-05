@@ -15,11 +15,11 @@ const RetroUIProgress = React.forwardRef<HTMLDivElement, RetroUIProgressProps>(
       <div ref={ref} className={cn("w-full", className)} {...props}>
         {label && (
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-bold">{label}</span>
-            <span className="text-sm font-mono">{value}/{max}</span>
+            <span className="text-xs sm:text-sm font-bold">{label}</span>
+            <span className="text-xs sm:text-sm font-mono">{value}/{max}</span>
           </div>
         )}
-        <div className="h-6 w-full border-2 border-black bg-white retroui-shadow">
+        <div className="h-5 sm:h-6 w-full border-2 border-black bg-white retroui-shadow">
           <div
             className="h-full bg-yellow-400 transition-all duration-300"
             style={{ width: `${percentage}%` }}
