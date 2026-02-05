@@ -44,13 +44,8 @@ export function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-<<<<<<< Updated upstream
             <Link to="/roast">
               <RetroUIButton size="sm" className="text-sm lg:text-base">
-=======
-            <Link to="/auth/login">
-              <RetroUIButton size="sm">
->>>>>>> Stashed changes
                 ROAST ME 🔥
               </RetroUIButton>
             </Link>
