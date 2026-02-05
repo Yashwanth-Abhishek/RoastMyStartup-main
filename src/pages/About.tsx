@@ -2,6 +2,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { RetroUICard, RetroUICardContent, RetroUIBadge, RetroUIButton } from "@/components/retroui";
 import { Flame, Heart, Target, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getRoastNavigationPath } from "@/lib/navigation";
 
 const team = [
   {
@@ -164,7 +165,7 @@ export default function About() {
             Your startup idea is probably not as good as you think. 
             Let us help you find out.
           </p>
-          <Link to="/auth/login">
+          <Link to={getRoastNavigationPath()}>
             <RetroUIButton size="xl" className="text-base sm:text-lg md:text-xl h-14 sm:h-16">
               GET ROASTED NOW 🔥
             </RetroUIButton>

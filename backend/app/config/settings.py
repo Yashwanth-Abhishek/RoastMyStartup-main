@@ -18,6 +18,19 @@ class Settings(BaseSettings):
     supabase_url: str
     supabase_key: str
     
+    # Google OAuth Configuration (optional - only needed for auth endpoints)
+    google_client_id: Optional[str] = None
+    google_client_secret: Optional[str] = None
+    google_redirect_uri: Optional[str] = None
+    
+    # JWT Configuration (optional - only needed for auth endpoints)
+    jwt_secret_key: Optional[str] = None
+    jwt_algorithm: str = "HS256"
+    jwt_expiration_hours: int = 24
+    
+    # Frontend Configuration (optional - for OAuth redirects)
+    frontend_base_url: str = "http://localhost:8080"
+    
     # Application Configuration
     app_name: str = "RoastMyStartup API"
     debug: bool = False

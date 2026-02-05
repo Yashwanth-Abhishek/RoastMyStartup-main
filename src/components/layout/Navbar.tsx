@@ -2,10 +2,11 @@ import { Link, useLocation } from "react-router-dom";
 import { RetroUIButton } from "@/components/retroui";
 import { Flame, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { getRoastNavigationPath } from "@/lib/navigation";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/auth/login", label: "Get Roasted" },
+  { href: "dynamic-roast", label: "Get Roasted" }, // Special marker for dynamic routing
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
 ];
@@ -13,6 +14,7 @@ const navLinks = [
 export function Navbar() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const roastPath = getRoastNavigationPath();
 
   return (
     <nav className="bg-white border-b-2 border-black sticky top-0 z-50">
@@ -27,24 +29,31 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`px-3 lg:px-4 py-2 font-bold text-sm lg:text-base transition-colors ${
-                  location.pathname === link.href
-                    ? "bg-yellow-400 text-black"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const href = link.href === "dynamic-roast" ? roastPath : link.href;
+              const isActive = link.href === "dynamic-roast" 
+                ? location.pathname === "/roast" || location.pathname.startsWith("/auth")
+                : location.pathname === link.href;
+              
+              return (
+                <Link
+                  key={link.label}
+                  to={href}
+                  className={`px-3 lg:px-4 py-2 font-bold text-sm lg:text-base transition-colors ${
+                    isActive
+                      ? "bg-yellow-400 text-black"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Link to="/auth/login">
+            <Link to={roastPath}>
               <RetroUIButton size="sm" className="text-sm lg:text-base">
                 ROAST ME 🔥
               </RetroUIButton>
@@ -65,22 +74,29 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t-2 border-black bg-white">
           <div className="flex flex-col">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`px-4 py-4 font-bold border-b-2 border-black text-sm ${
-                  location.pathname === link.href
-                    ? "bg-yellow-400 text-black"
-                    : ""
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const href = link.href === "dynamic-roast" ? roastPath : link.href;
+              const isActive = link.href === "dynamic-roast"
+                ? location.pathname === "/roast" || location.pathname.startsWith("/auth")
+                : location.pathname === link.href;
+              
+              return (
+                <Link
+                  key={link.label}
+                  to={href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-4 py-4 font-bold border-b-2 border-black text-sm ${
+                    isActive
+                      ? "bg-yellow-400 text-black"
+                      : ""
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <div className="p-4">
-              <Link to="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+              <Link to={roastPath} onClick={() => setMobileMenuOpen(false)}>
                 <RetroUIButton className="w-full">
                   ROAST ME 🔥
                 </RetroUIButton>

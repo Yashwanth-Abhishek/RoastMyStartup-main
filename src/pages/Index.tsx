@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { RetroUIButton, RetroUIBadge, RetroUICard, RetroUICardContent } from "@/components/retroui";
 import { AlertTriangle, ArrowRight, Flame, Zap } from "lucide-react";
+import { getRoastNavigationPath } from "@/lib/navigation";
 
 const testimonials = [
   {
@@ -113,7 +114,7 @@ export default function Index() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 max-w-2xl mx-auto">
-            <Link to="/auth/login" className="w-full sm:w-auto sm:flex-1">
+            <Link to={getRoastNavigationPath()} className="w-full sm:w-auto sm:flex-1">
               <RetroUIButton size="xl" className="w-full text-base sm:text-lg lg:text-xl h-14 sm:h-16">
                 ROAST MY IDEA
                 <Flame className="ml-2 h-5 w-5 sm:h-6 sm:w-6" />
@@ -219,7 +220,7 @@ export default function Index() {
             Your idea might be the next unicorn. Or it might be the next cautionary tale.
             Only one way to find out.
           </p>
-          <Link to="/auth/login">
+          <Link to={getRoastNavigationPath()}>
             <RetroUIButton size="xl" className="text-base sm:text-lg lg:text-xl h-14 sm:h-16">
               DESTROY MY STARTUP
               <Zap className="ml-2 h-5 w-5 sm:h-6 sm:w-6" />

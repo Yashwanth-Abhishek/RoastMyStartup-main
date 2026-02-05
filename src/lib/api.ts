@@ -21,6 +21,13 @@ export interface RoastResponse {
 const API_BASE_URL = "https://roast-my-startup-api.onrender.com";
 
 /**
+ * OAuth endpoints
+ */
+export const OAUTH_ENDPOINTS = {
+  googleLogin: `${API_BASE_URL}/auth/google`,
+};
+
+/**
  * Generate a roast for a startup idea
  * @param request - The roast request data
  * @returns Promise resolving to the roast response

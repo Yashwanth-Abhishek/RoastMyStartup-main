@@ -6,6 +6,7 @@ from app.schemas.roast import RoastRequest, RoastResponse
 from app.services.roast_service import roast_service
 from app.services.db_service import db_service
 from app.config.settings import settings
+from app.routes.auth import router as auth_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -26,6 +27,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Register routers
+app.include_router(auth_router)
 
 @app.on_event("startup")
 async def startup_event():
