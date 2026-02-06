@@ -18,7 +18,7 @@ export interface RoastResponse {
   survival_tips: string[];
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE_URL = "https://roast-my-startup-api.onrender.com";
 
 /**
  * OAuth endpoints
@@ -36,21 +36,11 @@ export const OAUTH_ENDPOINTS = {
 export async function generateRoast(
   request: RoastRequest
 ): Promise<RoastResponse> {
-  // Get auth token from localStorage if available
-  const token = localStorage.getItem("auth_token");
-  
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  
-  // Add Authorization header if token exists
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
-  
   const response = await fetch(`${API_BASE_URL}/roast`, {
     method: "POST",
-    headers,
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(request),
   });
 
