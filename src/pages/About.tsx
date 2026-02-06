@@ -13,7 +13,7 @@ const team = [
   {
     name: "Abhinav",
     role: "Head of Brutal Honesty",
-    bio: "Killed 47 startups with feedback alone.",
+    bio: "Killed 69 startups with feedback alone.",
   },
   {
     name: "Abhishek",

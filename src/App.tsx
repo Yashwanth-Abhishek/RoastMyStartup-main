@@ -5,7 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
+import { ColdStartLoader } from "@/components/ColdStartLoader";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { useState } from "react";
 import Index from "./pages/Index";
 import Roast from "./pages/Roast";
 import Result from "./pages/Result";
@@ -20,35 +22,43 @@ import Callback from "./pages/auth/Callback";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <ScrollToTopButton />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/roast" element={
-            <ProtectedRoute>
-              <Roast />
-            </ProtectedRoute>
-          } />
-          <Route path="/result" element={<Result />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/signup" element={<Signup />} />
-          <Route path="/auth/continue" element={<Continue />} />
-          <Route path="/auth/callback" element={<Callback />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const [isBackendReady, setIsBackendReady] = useState(false);
+
+  if (!isBackendReady) {
+    return <ColdStartLoader onReady={() => setIsBackendReady(true)} />;
+  }
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ScrollToTop />
+          <ScrollToTopButton />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/roast" element={
+              <ProtectedRoute>
+                <Roast />
+              </ProtectedRoute>
+            } />
+            <Route path="/result" element={<Result />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/signup" element={<Signup />} />
+            <Route path="/auth/continue" element={<Continue />} />
+            <Route path="/auth/callback" element={<Callback />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
